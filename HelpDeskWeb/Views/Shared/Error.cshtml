@@ -1,0 +1,14 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Xəta";
+}
+
+<div class="container mt-5">
+    <h1 class="text-danger">Xəta baş verdi.</h1>
+    <p>Sorğunun icrası zamanı xəta yarandı.</p>
+
+    @if (Model.ShowRequestId)
+    {
+        <p><strong>Request ID:</strong> <code>@Model.RequestId</code></p>
+    }
+</div>

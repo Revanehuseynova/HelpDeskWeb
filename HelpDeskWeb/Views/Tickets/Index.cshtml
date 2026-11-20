@@ -1,0 +1,84 @@
+@model IEnumerable<HelpDeskWeb.Models.Ticket>
+
+@{
+    ViewData["Title"] = "Müraciətlər";
+    string? currentCategory = ViewBag.Category as string;
+}
+
+<div class="container mt-4">
+    <h2>Texniki dəstək müraciətləri</h2>
+
+    <a asp-action="Create"
+       class="btn btn-primary mb-3">
+        Yeni müraciət yarat
+    </a>
+
+    <form asp-action="Index" method="get" class="row g-2 mb-3">
+        <div class="col-md-5">
+            <input type="text" name="search"
+                   value="@ViewBag.Search"
+                   class="form-control"
+                   placeholder="Başlığa görə axtar..." />
+        </div>
+        <div class="col-md-4">
+            <select name="category" class="form-select">
+                <option value="">Bütün kateqoriyalar</option>
+                <option value="Computer" selected="@(currentCategory == "Computer")">Kompüter</option>
+                <option value="Internet" selected="@(currentCategory == "Internet")">İnternet</option>
+                <option value="Printer" selected="@(currentCategory == "Printer")">Printer</option>
+                <option value="Software" selected="@(currentCategory == "Software")">Proqram təminatı</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-dark">Axtar / Filtrlə</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Təmizlə</a>
+        </div>
+    </form>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Başlıq</th>
+                <th>Kateqoriya</th>
+                <th>Prioritet</th>
+                <th>Status</th>
+                <th>Əməliyyatlar</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="@(item.Priority == "High" ? "priority-high" : "")">
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                <td>@item.Category</td>
+                <td>@item.Priority</td>
+                <td>@item.Status</td>
+                <td>
+                    <a asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="btn btn-info btn-sm">
+                        Ətraflı
+                    </a>
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning btn-sm">
+                        Redaktə
+                    </a>
+                    <a asp-action="Delete"
+                       asp-route-id="@item.Id"
+                       class="btn btn-danger btn-sm">
+                        Sil
+                    </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    @if (!Model.Any())
+    {
+        <p>Hələ müraciət yaradılmayıb.</p>
+    }
+</div>
